@@ -10,7 +10,7 @@
 int main(const int argc, const char *const argv[])
 {
 
-    std::cout << "Amplificator UDP DoS Attack (IP spoofing)" << std::endl;
+    std::cout << "Amplifier UDP DoS Attack (IP spoofing)" << std::endl;
 
     // Arguments
     if (argc != 7)

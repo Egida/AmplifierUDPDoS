@@ -26,7 +26,20 @@ program [target-IP] [target-port] [file with server list] [binary file with pack
 
 ## Usage example
 
-program 192.168.1.25 80 ./servers.txt ./packet.bin 50 0
+`AmplifierUDPDoS 192.168.1.25 80 ./servers.txt ./packet.bin 50 0`
+
+# Build
+
+In the source code directory run:
+
+```cmake -S .```
+
+```cmake --build .```
+
+# Requirements and restrictions
+
+Compiler with support for C++17 or above.
+
 
 # LICENSE
 

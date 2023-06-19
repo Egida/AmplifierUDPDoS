@@ -1,8 +1,8 @@
-#include "ServerFilter.h"
+#include "serverFilter.h"
 
 static constexpr const unsigned long long timeoutRecvMs = 100;
 
-double getCofServer(const ServeraAmplf &server, const double minCof, const uint8_t *packet, unsigned int packetSz)
+double getCofServer(const ServeraAmplf &server, const double minCof, const uint8_t *packet, size_t packetSz)
 {
     // Creating socket
     int sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -31,7 +31,7 @@ double getCofServer(const ServeraAmplf &server, const double minCof, const uint8
 
     // Recv
     ssize_t recvFull = 0;
-    ssize_t recvBytes = 0;
+    ssize_t recvBytes;
     char buffer[1024];
     while ((recvBytes = recv(sockfd, buffer, sizeof(buffer), 0)) > 0)
         recvFull += recvBytes;
@@ -45,25 +45,16 @@ double getCofServer(const ServeraAmplf &server, const double minCof, const uint8
     return ((double)recvFull) / ((double)sendSz);
 }
 
-double filterServers(std::list<ServeraAmplf> &serverList, double minCof, const uint8_t *packet, const unsigned int packetSz)
+double filterServers(std::list<ServeraAmplf> &serverList, double minCof, const uint8_t *packet, const size_t packetSz)
 {
-    if (packet == nullptr)
-        throw std::runtime_error("packet buffer is null!");
-
-    if (packetSz == 0)
-        throw std::runtime_error("packet buffer size is 0");
-
-    if (serverList.empty())
-        throw std::runtime_error("server list is empty");
-
     double fullAmplificationCofValue = 0;
 
     for (auto i = serverList.begin(); i != serverList.end();)
     {
-        const auto &server = *i;
+        const ServeraAmplf &server = *i;
         try
         {
-            const auto cof = getCofServer(server, minCof, packet, packetSz);
+            const double cof = getCofServer(server, minCof, packet, packetSz);
             if (cof < minCof)
             {
                 serverList.erase(i++);

@@ -2,28 +2,30 @@
 #define SERVERCHECKER_H
 
 #include <list>
+#include <string>
 #include <memory>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <unistd.h>
-#include <string.h>
+
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <fcntl.h>
 
 struct ServeraAmplf
 {
-    std::string host;
-    uint16_t port;
-    bool operator==(const ServeraAmplf &s)
+    std::string host{};
+    uint16_t port{};
+    bool operator==(const ServeraAmplf &s) const noexcept
     {
         return (s.host == this->host && s.port == this->port);
     }
 };
 
-double filterServers(std::list<ServeraAmplf> &serverList, const double minCof, const uint8_t *packet, unsigned int packetSz);
+double filterServers(std::list<ServeraAmplf> &serverList, double minCof, const uint8_t *packet, size_t packetSz);
 
 #endif
